@@ -38,10 +38,8 @@ class AuthController extends Controller
 
 	public function getListFriends()
 	{
-
-		$ch = curl_init(); 
+		$ch  = curl_init(); 
  		$url = "https://graph.facebook.com/v2.11/";
-
  		$uri = "me/taggable_friends?access_token=" .env('TOKEN_FB');
         // set url 
         $url = $url . $uri;
@@ -56,27 +54,29 @@ class AuthController extends Controller
         // die(var_dump($output->data[0]->picture->data->url));
         // dd($output);
         return view('friendlists', compact("output"));
-
-		// $fb = new Facebook;
-		// try {
-		//   $response = $fb->get(
-		//     '1024646461009169/taggable_friends',
-		//     env('TOKEN_FB')
-		//   );
-		//   dd($response);
-		// } catch(Facebook\Exceptions\FacebookResponseException $e) {
-		//   echo 'Graph returned an error: ' . $e->getMessage();
-		//   exit;
-		// } catch(Facebook\Exceptions\FacebookSDKException $e) {
-		//   echo 'Facebook SDK returned an error: ' . $e->getMessage();
-		//   exit;
-		// }
-		// $graphNode = $response->getGraphNode();
 	}
 	public function checkEmail($email)
 	{
 		$user = User::where('email','=',$email)->first();
 		return $user;
+	}
+	public function addNewFeed()
+	{
+		return view('addnewfeed');
+	}
+	public function postNewFeed(Request $request)
+	{
+		$message = $request->input('message');
+		// dd($message);
+		$fb = new Facebook();
+		$response = $fb->post(
+		    '/me/feed',
+		    array (
+		      'message' => $message,
+		    ),
+		    env('TOKEN_FB')
+		);
+		return redirect('home');
 	}
 
 }
