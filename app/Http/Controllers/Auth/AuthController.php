@@ -16,6 +16,7 @@ class AuthController extends Controller
 	{
 	    return Socialite::driver('facebook')->redirect();
 	}
+
 	public function handleFacebookCallback()
 	{
 	    $user = Socialite::driver('facebook')->user();
@@ -56,15 +57,18 @@ class AuthController extends Controller
         // dd($output->data);
         return view('friendlists', compact("output"));
 	}
+
 	public function checkEmail($email)
 	{
 		$user = User::where('email','=',$email)->first();
 		return $user;
 	}
+
 	public function addNewFeed()
 	{
 		return view('addnewfeed');
 	}
+
 	public function postNewFeed(Request $request)
 	{
 		$message = $request->input('message');
@@ -81,6 +85,7 @@ class AuthController extends Controller
 		);
 		return redirect('home');
 	}
+
 	public function oneNewFeed($id)
 	{
 		// // $idnf = $id;
@@ -94,7 +99,7 @@ class AuthController extends Controller
 		$idn = $id;
 		$ch  = curl_init(); 
  		$url = "https://graph.facebook.com/v2.11/";
- 		$uri = $idn."/feed?limit=3&access_token=" .env('TOKEN_FACE');
+ 		$uri = $idn."/feed?limit=1&access_token=" .env('TOKEN_FACE');
         // set url 
         $url = $url . $uri;
         curl_setopt($ch, CURLOPT_URL, $url); 
@@ -124,10 +129,10 @@ class AuthController extends Controller
 		// );
 		// dd($response);
 		// return redirect('home');
-			$ch  = curl_init(); 
+		$ch  = curl_init(); 
 		foreach ($idnew as $value) {
 	 		$url = "https://graph.facebook.com/v2.11/";
-	 		$uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .env('TOKEN_FACE');
+	 		$uri = $value->id."/reactions?type=LIKE&method=POST&access_token=" .env('TOKEN_FACE');
 	        // set url 
 	        $url = $url . $uri;
 	        curl_setopt($ch, CURLOPT_URL, $url); 
@@ -137,7 +142,7 @@ class AuthController extends Controller
 	        $output = curl_exec($ch); 
 	        // close curl resource to free up system resources 
 		}
-	        curl_close($ch);
+	    curl_close($ch);
 		
         return redirect('home');
 	}

@@ -9,7 +9,8 @@
                 <table class="table table-hover">
                 	<thead class="thead-dark">
 	                	<tr>
-	                		<th scope="col">#</th>
+                            <th scope="col">#</th>
+	                		<th scope="col">ID</th>
                             <th scope="col">Name</th>
                             <th scope="col">Link Face</th>
 	                		<th scope="col">Like New feed of His/Her</th>
@@ -19,19 +20,21 @@
                 	<tbody>
                 		@foreach ($output->data as $key => $items)
                 		<tr>
-                			<td scope="row">
-                				{{ ++$key}}
-                			</td>
+                            <td scope="row">
+                                {{ ++$key}}
+                            </td>
+                            <td scope="row">
+                                {{ $items->id }}
+                            </td>
                 			<td>
                 				{{ $items->name }}
                 			</td>
                             <td>
                                 <a href="https://facebook.com/{{ $items->id}}">Facebook of {{ $items->name }}</a>
                             </td>
-                            <td style="text-align: center;">{{-- 
-                                <a href="{{ Route('likefirstnf', $items->id) }}">Click if you Love ...{{ $items->gender }}
-                                </a> --}}
-                                {{ $items->gender}}
+                            <td style="text-align: center;">
+                                <a href="{{ Route('likefirstnf', $items->id) }}">Click if you Love ...
+                                </a>
                             </td>
                 			<td>
                 				<img src="{{ $items->picture->data->url }}" alt="">
