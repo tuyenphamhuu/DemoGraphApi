@@ -14,11 +14,16 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebook')->name('auth.facebook');
-Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback');
-Route::get('listfriends', 'Auth\AuthController@getListFriends')->name('listfriends');
-Route::get('addnewfeed', 'Auth\AuthController@addNewFeed');
-Route::post('postnewfeed', 'Auth\AuthController@postNewFeed')->name('postnewfeed');
+Route::group(['prefix' => 'auth'], function(){
+	Route::get('facebook', 'Auth\AuthController@redirectToFacebook')->name('auth.facebook');
+	Route::get('facebook/callback', 'Auth\AuthController@handleFacebookCallback');
+});
+Route::group(['middleware' => 'auth'], function(){
+	Route::get('listfriends', 'Auth\AuthController@getListFriends')->name('listfriends');
+	Route::get('addnewfeed', 'Auth\AuthController@addNewFeed')->name('addnewfeed');
+	Route::post('postnewfeed', 'Auth\AuthController@postNewFeed')->name('postnewfeed');
+	Route::get('likefirstnf/{id}', 'Auth\AuthController@like')->name('likefirstnf');
+});
 
 Auth::routes();
 

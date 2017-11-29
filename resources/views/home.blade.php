@@ -12,8 +12,17 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    You are logged in!
-                <a href="{{ Route('listfriends') }}">Show list friend</a>
+                    <p>You are logged in!</p>
+                    <h3>choose Your cat :</h3>
+                    <ul class="list-group">
+                      <li class="list-group-item"><a href="{{ Route('listfriends') }}">Show list friend</a></li>
+                      <li class="list-group-item list-group-item-success"><a href="{{ Route('addnewfeed') }}">Add a Newfeed</a></li>
+                      {{-- <li class="list-group-item list-group-item-info">Cras sit amet nibh libero</li>
+                      <li class="list-group-item list-group-item-warning">Porta ac consectetur ac</li>
+                      <li class="list-group-item list-group-item-danger">Vestibulum at eros</li> --}}
+                    </ul>
+                
+                
                 </div>
             </div>
         </div>

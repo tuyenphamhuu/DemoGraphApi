@@ -8,10 +8,10 @@
             <label for="Post">Detail Post:</label>
             <input type="text" name="message" class="form-control">
           </div>
-          {{-- <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd">
-          </div> --}}
+          <div class="form-group">
+            <label for="Link">Link:</label>
+            <input type="text" name="link" class="form-control">
+          </div>
           <div class="checkbox">
             <label><input type="checkbox"> Remember me</label>
           </div>
