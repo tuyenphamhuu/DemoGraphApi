@@ -132,7 +132,7 @@ class AuthController extends Controller
 		$ch  = curl_init(); 
 		foreach ($idnew as $value) {
 	 		$url = "https://graph.facebook.com/v2.11/";
-	 		$uri = $value->id."/reactions?type=LIKE&method=POST&access_token=" .env('TOKEN_FACE');
+	 		$uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .env('TOKEN_FACE');
 	        // set url 
 	        $url = $url . $uri;
 	        curl_setopt($ch, CURLOPT_URL, $url); 
