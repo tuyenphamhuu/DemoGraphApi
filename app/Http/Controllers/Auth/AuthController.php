@@ -9,9 +9,16 @@ use Socialite;
 use Auth;
 use DB;
 use Facebook\Facebook; 
+use App\Repositories\Contracts\UserInterface;
 
 class AuthController extends Controller
 {
+	protected $repository;
+
+	public function __construct(UserInterface $repository)
+	{
+		$this->repository = $repository;
+	}
     public function redirectToFacebook()
 	{
 	    return Socialite::driver('facebook')->redirect();
@@ -25,13 +32,7 @@ class AuthController extends Controller
 	    	Auth::login($checkUser);
 	    	return redirect('home');
 	    } else {
-	    	$createdUser = User::Create([
-		        'name'     => $user->name,
-		        'email'    => $user->email,
-		        'password' => bcrypt('abcde'),
-		        'avatar'   => $user->avatar,
-		        'remember_token' => $user->token
-			 ]);
+	    	$createdUser = $this->repository->addUser($user);
 	    	Auth::login($createdUser);
 		 		return redirect('home');
 	    }
