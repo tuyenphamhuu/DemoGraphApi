@@ -70,6 +70,7 @@ class AuthController extends Controller
 		    array (
 		      'message' => $message,
 		      'link'    => $link
+		      // 'tags'	=> '100004519381111'
 		    ),
 		    env('TOKEN_FB')
 		);
