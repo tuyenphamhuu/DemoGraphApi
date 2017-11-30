@@ -43,19 +43,9 @@ class AuthController extends Controller
 		$ch  = curl_init(); 
  		$url = "https://graph.facebook.com/v2.11/";
  		$uri = "me/friends?fields=picture,name,gender&limit=200&access_token=" .env('TOKEN_FACE');
-        // set url 
-        $url = $url . $uri;
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        //return the transfer as a string 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-        // $output contains the output string 
-        $output = curl_exec($ch); 
-        // close curl resource to free up system resources 
+        $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output);
-        // dd($output);
-        // die(var_dump($output->data[0]->picture->data->url));
-        // dd($output->data);
         return view('friendlists', compact("output"));
 	}
 
@@ -74,7 +64,6 @@ class AuthController extends Controller
 	{
 		$message = $request->input('message');
 		$link = $request->input('link');
-		// dd($message);
 		$fb = new Facebook();
 		$response = $fb->post(
 		    '/me/feed',
@@ -89,63 +78,34 @@ class AuthController extends Controller
 
 	public function oneNewFeed($id)
 	{
-		// // $idnf = $id;
-		// $fb = new Facebook();
-		// $response = $fb->get(
-		// 	// '/'.$idnf.'/feed',	
-		// 	'/ngoc.vit.923/feed?limit=1',
-		// 	env('TOKEN_FACE')
-		// );
-		// dd($response);
 		$idn = $id;
 		$ch  = curl_init(); 
  		$url = "https://graph.facebook.com/v2.11/";
  		$uri = $idn."/feed?limit=1&access_token=" .env('TOKEN_FACE');
-        // set url 
-        $url = $url . $uri;
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        //return the transfer as a string 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-        // $output contains the output string 
-        $output = curl_exec($ch); 
-        // close curl resource to free up system resources 
+        $output = $this->getCurl($ch, $url, $uri); 
         curl_close($ch);
         $output = json_decode($output);
-        // dd($output->data[0]->id);
-        // return $output->data[0]->id;
         return $output->data;
 	}
 
 	public function like($id)
 	{
 		$idnew = $this->oneNewFeed($id);
-		// dd($idnew);
-		// $fb = new Facebook();
-		// $response = $fb->post(
-		//     $idnew.'/reactions',
-		//     array (
-		//       'type' => 'LOVE',
-		//     ),
-		//     env('TOKEN_FB')
-		// );
-		// dd($response);
-		// return redirect('home');
 		$ch  = curl_init(); 
 		foreach ($idnew as $value) {
 	 		$url = "https://graph.facebook.com/v2.11/";
 	 		$uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .env('TOKEN_FACE');
-	        // set url 
-	        $url = $url . $uri;
-	        curl_setopt($ch, CURLOPT_URL, $url); 
-	        //return the transfer as a string 
-	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-	        // $output contains the output string 
-	        $output = curl_exec($ch); 
-	        // close curl resource to free up system resources 
+	        $output = $this->getCurl($ch, $url, $uri);
 		}
 	    curl_close($ch);
-		
         return redirect('home');
+	}
+	public function getCurl($ch, $url, $uri)
+	{
+		$url = $url . $uri;
+		curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        return curl_exec($ch);
 	}
 
 }
