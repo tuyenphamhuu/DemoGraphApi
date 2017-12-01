@@ -12,6 +12,7 @@ class Auto extends Command
      *
      * @var string
      */
+    protected $auto;
     protected $signature = 'auto {id}';
 
     /**
@@ -26,9 +27,10 @@ class Auto extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AuthController $auto)
     {
         parent::__construct();
+        $this->auto = $auto;
     }
 
     /**
@@ -38,7 +40,7 @@ class Auto extends Command
      */
     public function handle()
     {
-        $result = new AuthController();
-        return $result->like($this->argument('id'));
+        // $result = $this->auto;
+        return $this->auto->like($this->argument('id'));
     }
 }
