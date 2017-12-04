@@ -40,7 +40,6 @@ class Auto extends Command
      */
     public function handle()
     {
-        // $result = $this->auto;
         return $this->auto->like($this->argument('id'));
     }
 }
