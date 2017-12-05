@@ -37,9 +37,9 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '689922597871310',
-        'client_secret' => '61972379c0d502158813350ea4475acf',
-        'redirect' => 'http://loginface.dev/auth/facebook/callback',
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'redirect' => env('FACEBOOK_APP_REDIRECT'),
     ],
 
 
