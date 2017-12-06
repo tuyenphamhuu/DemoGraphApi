@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -51,7 +52,7 @@
                                     {{ Auth::user()->name }} <img width="30px" src="{{ Auth::user()->avatar }}" alt=""> <span class="caret">
                                     </span>
                                 </a>
-                                    
+
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -77,5 +78,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
+    {{-- <script type="text/javascript" src=" {{ asset('js/dataTables.bootstrap4.js') }} " ></script> --}}
+    <script type="text/javascript" src=" {{ asset('js/jquery.dataTables.min.js') }} "  {{-- async --}}></script>
+
 </body>
 </html>

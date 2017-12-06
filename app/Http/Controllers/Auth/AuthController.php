@@ -44,11 +44,16 @@ class AuthController extends Controller
     {
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=" .Session::get('token');
+        $uri = "me/friends?fields=picture,name,gender&limit=500&access_token=" .Session::get('token');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
-        $output = json_decode($output);
-        if (isset($output->data)) {
+        $output = json_decode($output, true);
+        $output = collect($output['data']);
+        // $output->setPath('output');
+        // dd($output);
+        // $output = $output->paginate(10);
+        // dd($output);
+        if (isset($output)) {
             return view('friendlists', compact("output"));
         } else {
             return redirect('home');
@@ -83,8 +88,8 @@ class AuthController extends Controller
           //  env('TOKEN_FACE')
         //);
         $ch = curl_init();
-        $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=".env('TOKEN_FACE');
+        $url = "https://graph.facebook.com/v1.11/";
+        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=" .Session::get('token');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         return redirect('home');
@@ -134,4 +139,5 @@ class AuthController extends Controller
             return redirect('home');
         }
     }
+
 }

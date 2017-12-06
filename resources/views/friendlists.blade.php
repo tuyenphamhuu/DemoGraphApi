@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading"><h1>List Friend Facebook:</h1></div>
-                <table class="table table-hover">
+                <table id="example" class="table table-hover">
                 	<thead class="thead-dark">
 	                	<tr>
                             <th scope="col">#</th>
@@ -18,37 +18,40 @@
 	                	</tr>
                 	</thead>
                 	<tbody>
-                		@foreach ($output->data as $key => $items)
+                		@foreach ($output as $key => $items)
                 		<tr>
                             <td scope="row">
                                 {{ ++$key}}
                             </td>
                             <td scope="row">
-                                {{ $items->id }}
+                                {{ $items['id'] }}
                             </td>
                 			<td>
-                				{{ $items->name }}
+                				{{ $items['name'] }}
                 			</td>
                             <td>
-                                <a href="https://facebook.com/{{ $items->id}}">Facebook of {{ $items->name }}</a>
+                                <a href="https://facebook.com/{{ $items['id'] }}">Facebook of {{ $items['name'] }}</a>
                             </td>
                             <td style="text-align: center;">
-                                <a href="{{ Route('likefirstnf', $items->id) }}">Click if you Love ...
+                                <a href="{{ Route('likefirstnf', $items['id']) }}">Click if you Love ...
                                 </a>
                             </td>
                 			<td>
-                				<img src="{{ $items->picture->data->url }}" alt="">
+                				<img src="{{ $items['picture']['data']['url'] }}" alt="">
                 			</td>
                 		</tr>
-                		
                 		 @endforeach
                 	</tbody>
                     {{-- {{ $items->links() }} --}}
                 </table>
-                
-	             {{-- {{ dd($output)  }} --}}
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#example').DataTable();
+    });
+ </script>
 @endsection
+

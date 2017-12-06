@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Http\Controllers\Auth\AuthController;
+use Session;
 
 class Auto extends Command
 {
@@ -13,6 +14,7 @@ class Auto extends Command
      * @var string
      */
     protected $auto;
+
     protected $signature = 'auto {id}';
 
     /**
