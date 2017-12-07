@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=" .env('TOKEN_FACE');;
+        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=".Session::get('token');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output, true);
@@ -72,20 +72,10 @@ class AuthController extends Controller
     {
         $message = $request->input('message');
         $link = $request->input('link');
-        //$fb = new Facebook();
-        //$response = $fb->post(
-           // '/me/feed',
-           // array (
-              //  'message' => $message,
-             //   'link'    => $link
-              // 'tags' => '100004519381111'
-           // ),
-          //  env('TOKEN_FACE')
-        //);
         $ch = curl_init();
-        $url = "https://graph.facebook.com/v1.11/";
-        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=" .env('TOKEN_FACE');;
-        $output = $this->getCurl($ch, $url, $uri);
+        $url = "https://graph.facebook.com/v2.11/";
+        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=".env('TOKEN_FACE');
+        $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         return redirect('home');
         }
@@ -95,7 +85,7 @@ class AuthController extends Controller
         $idn = $id;
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = $idn."/feed?limit=1&access_token=" .env('TOKEN_FACE');
+        $uri = $idn."/feed?limit=1&access_token=" .Session::get('token');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output);
@@ -109,7 +99,7 @@ class AuthController extends Controller
         $ch  = curl_init();
         foreach ($newfeeds as $value) {
             $url = "https://graph.facebook.com/v2.11/";
-            $uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .env('TOKEN_FACE');
+            $uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .Session::get('token');
             $output = $this->getCurl($ch, $url, $uri);
         }
         curl_close($ch);
@@ -128,8 +118,8 @@ class AuthController extends Controller
     {
         $token = $request->input('token');
         if (!empty($token)) {
-            // Session::put('token', $token);
-           $this->setEnvironmentValue('TOKEN_FACE', $token);
+            Session::put('token', $token);
+           // $this->setEnvironmentValue('TOKEN_FACE', $token);
             // $a = Session::get('token');
             return redirect('home');
         } else {
