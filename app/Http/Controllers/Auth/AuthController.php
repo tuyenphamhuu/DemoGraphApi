@@ -74,7 +74,7 @@ class AuthController extends Controller
         $link = $request->input('link');
         $ch = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=".env('TOKEN_FACE');
+        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=".Session::get('token');
         $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         return redirect('home');
