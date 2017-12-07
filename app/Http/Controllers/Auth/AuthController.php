@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=" .Session::get('token');
+        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=" .env('TOKEN_FACE');;
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output, true);
@@ -55,8 +55,6 @@ class AuthController extends Controller
         } else {
             return redirect('home');
         }
-
-
     }
 
     public function checkEmail($email)
@@ -67,7 +65,6 @@ class AuthController extends Controller
 
     public function addNewFeed()
     {
-        // dd(Session::get('token'));
         return view('addnewfeed');
     }
 
@@ -87,7 +84,7 @@ class AuthController extends Controller
         //);
         $ch = curl_init();
         $url = "https://graph.facebook.com/v1.11/";
-        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=" .Session::get('token');
+        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=" .env('TOKEN_FACE');;
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         return redirect('home');
@@ -98,7 +95,7 @@ class AuthController extends Controller
         $idn = $id;
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = $idn."/feed?limit=1&access_token=" .Session::get('token');
+        $uri = $idn."/feed?limit=1&access_token=" .env('TOKEN_FACE');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output);
@@ -107,11 +104,12 @@ class AuthController extends Controller
 
     public function like($id)
     {
+        // dd(env('TOKEN_FACE'));
         $newfeeds = $this->oneNewFeed($id);
         $ch  = curl_init();
         foreach ($newfeeds as $value) {
             $url = "https://graph.facebook.com/v2.11/";
-            $uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .Session::get('token');
+            $uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .env('TOKEN_FACE');
             $output = $this->getCurl($ch, $url, $uri);
         }
         curl_close($ch);
@@ -130,12 +128,27 @@ class AuthController extends Controller
     {
         $token = $request->input('token');
         if (!empty($token)) {
-            Session::put('token', $token);
-            $a = Session::get('token');
+            // Session::put('token', $token);
+           $this->setEnvironmentValue('TOKEN_FACE', $token);
+            // $a = Session::get('token');
             return redirect('home');
         } else {
             return redirect('home');
         }
+    }
+
+    public function setEnvironmentValue($envKey, $envValue)
+    {
+        $envFile = app()->environmentFilePath();
+        $str = file_get_contents($envFile);
+        // $oldValue = strtok($str, "{$envKey}=");
+        $oldValue = env($envKey);
+
+        $str = str_replace("{$envKey}={$oldValue}\n", "{$envKey}={$envValue}\n", $str);
+
+        $fp = fopen($envFile, 'w');
+        fwrite($fp, $str);
+        fclose($fp);
     }
 
 }
