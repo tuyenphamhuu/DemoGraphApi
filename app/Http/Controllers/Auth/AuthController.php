@@ -44,20 +44,18 @@ class AuthController extends Controller
     {
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/friends?fields=picture,name,gender&limit=500&access_token=" .Session::get('token');
+        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=" .Session::get('token');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output, true);
-        $output = collect($output['data']);
-        // $output->setPath('output');
-        // dd($output);
-        // $output = $output->paginate(10);
-        // dd($output);
-        if (isset($output)) {
+        // dd(var_dump($output['error']));
+        if (!isset($output['error'])) {
+            $output = collect($output['data']);
             return view('friendlists', compact("output"));
         } else {
             return redirect('home');
         }
+
 
     }
 
