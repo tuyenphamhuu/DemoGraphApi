@@ -8,7 +8,7 @@
                 <div class="panel-heading"><h2>Login with FaceBook</h2></div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                    {{-- <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
                         @if ($errors->any())
                             <div class="alert alert-danger">
@@ -69,7 +69,7 @@
                                 <a href="{{ route('auth.facebook') }}">FB Login</a>
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
                     <div class="col-md-8 col-md-offset-4">
                         <a href="{{ route('auth.facebook') }}">
                             <button class="btn btn-primary">CLICK LOGIN WITH YOUR FACEBOOK</button>
