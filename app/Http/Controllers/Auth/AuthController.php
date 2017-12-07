@@ -141,8 +141,8 @@ class AuthController extends Controller
     {
         $envFile = app()->environmentFilePath();
         $str = file_get_contents($envFile);
-        // $oldValue = strtok($str, "{$envKey}=");
-        $oldValue = env($envKey);
+        $oldValue = strtok($str, "{$envKey}=");
+        // $oldValue = env($envKey);
 
         $str = str_replace("{$envKey}={$oldValue}\n", "{$envKey}={$envValue}\n", $str);
 
