@@ -40,21 +40,66 @@ class AuthController extends Controller
         }
     }
 
-    public function getListFriends()
+    public function getDataListFr()
     {
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/friends?fields=picture,name,gender&limit=200&access_token=".Session::get('token');
+        $uri = "me/friends?fields=picture,name,gender,birthday&limit=200&access_token=".Session::get('token');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output, true);
-        // dd(var_dump($output['error']));
+        // dd(var_dump($output));
+        // return collect($output['data']);
+        if (isset($output->error)) {
+            return redirect('home');
+        } else {
+            return $output;
+        }
+    }
+
+    public function getListFriends()
+    {
+        // $ch  = curl_init();
+        // $url = "https://graph.facebook.com/v2.11/";
+        // $uri = "me/friends?fields=picture,name,gender,birthday&limit=200&access_token=".Session::get('token');
+        // $output = $this->getCurl($ch, $url, $uri);
+        // curl_close($ch);
+        // $output = json_decode($output, true);
+        // dd($output['data']);
+        // dd(starts_with($output['data']['birthday'], '01/03'));
+        // dd($output['data'][1]['birthday']);
+        $output = $this->getDataListFr();
+        // dd(var_dump($output));
         if (!isset($output['error'])) {
             $output = collect($output['data']);
             return view('friendlists', compact("output"));
         } else {
             return redirect('home');
         }
+    }
+
+    public function happBd()
+    {
+        $data = $this->getDataListFr();
+        $data = collect($data['data']);
+        // $data = $data
+        // dd($data);
+        foreach ($data as $key => $value) {
+            if (isset($value['birthday'])) {
+                // echo $value['name']." - ".$value['birthday'].'<br >';
+                if (starts_with($value['birthday'], date("m/d"))) {
+                    // dd("true");
+                    $ch = curl_init();
+                    $url = "https://graph.facebook.com/v2.11/";
+                    $uri = $value['id']."/feed?message=Happy birthday to You !!&method=POST&access_token=".Session::get('token');
+                    $this->getCurl($ch, $url, $uri);
+                    curl_close($ch);
+                }
+            }
+        }
+        die();
+
+
     }
 
     public function checkEmail($email)
