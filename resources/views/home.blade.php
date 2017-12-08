@@ -28,6 +28,7 @@
             <ul class="list-group">
               <li class="list-group-item"><a href="{{ Route('listfriends') }}">Show list friend</a></li>
               <li class="list-group-item list-group-item-success"><a href="{{ Route('addnewfeed') }}">Add a Newfeed</a></li>
+              <li class="list-group-item list-group-item-info"><a href="{{ Route('happbd') }}">Happy birthday friends to day</a></li>
                       {{-- <li class="list-group-item list-group-item-info">Cras sit amet nibh libero</li>
                       <li class="list-group-item list-group-item-warning">Porta ac consectetur ac</li>
                       <li class="list-group-item list-group-item-danger">Vestibulum at eros</li> --}}
