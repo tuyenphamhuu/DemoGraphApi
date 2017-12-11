@@ -90,7 +90,7 @@ class AuthController extends Controller
                         // dd("true");
                         $ch = curl_init();
                         $url = "https://graph.facebook.com/v2.11/";
-                        $uri = $value['id']."/feed?message=Happy birthday to You !!&method=POST&access_token=".Session::get('token');
+                        $uri = $value['id']."/feed?message=Happy birthday to You S2 !!&method=POST&access_token=".Session::get('token');
                         $this->getCurl($ch, $url, $uri);
                         curl_close($ch);
                     }
