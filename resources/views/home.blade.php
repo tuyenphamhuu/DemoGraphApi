@@ -13,6 +13,13 @@
                     </div>
                     @endif
                     <p>You are logged in!</p>
+                    @if(Session::has('message'))
+                          <p style="color: red" class="alert">{!! Session::get('message') !!}</p>
+                          {{ Session::forget('message') }}
+                          {{-- @foreach($errors->all() as $error)
+                              <p>{!! $error !!}</p>
+                          @endforeach --}}
+                    @endif
                     <form action="{{ Route('gettoken') }}" method="POST">
                       {{ csrf_field() }}
                       <div class="form-group row">

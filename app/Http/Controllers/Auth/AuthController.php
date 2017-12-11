@@ -81,25 +81,25 @@ class AuthController extends Controller
     public function happBd()
     {
         $data = $this->getDataListFr();
-        $data = collect($data['data']);
-        // $data = $data
-        // dd($data);
-        foreach ($data as $key => $value) {
-            if (isset($value['birthday'])) {
-                // echo $value['name']." - ".$value['birthday'].'<br >';
-                if (starts_with($value['birthday'], date("m/d"))) {
-                    // dd("true");
-                    $ch = curl_init();
-                    $url = "https://graph.facebook.com/v2.11/";
-                    $uri = $value['id']."/feed?message=Happy birthday to You !!&method=POST&access_token=".Session::get('token');
-                    $this->getCurl($ch, $url, $uri);
-                    curl_close($ch);
+        if (!isset($data['error'])) {
+            $data = collect($data['data']);
+            foreach ($data as $key => $value) {
+                if (isset($value['birthday'])) {
+                    // echo $value['name']." - ".$value['birthday'].'<br >';
+                    if (starts_with($value['birthday'], date("m/d"))) {
+                        // dd("true");
+                        $ch = curl_init();
+                        $url = "https://graph.facebook.com/v2.11/";
+                        $uri = $value['id']."/feed?message=Happy birthday to You !!&method=POST&access_token=".Session::get('token');
+                        $this->getCurl($ch, $url, $uri);
+                        curl_close($ch);
+                    }
                 }
             }
+            return redirect('home');
+        } else {
+            return redirect('home')->with('message', 'You should input your token !');
         }
-        die();
-
-
     }
 
     public function checkEmail($email)
