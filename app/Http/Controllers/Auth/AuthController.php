@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/friends?fields=picture,name,gender,birthday&limit=200&access_token=".Session::get('token');
+        $uri = "me/friends?fields=picture,name,gender,birthday&limit=200&access_token=".env('TOKEN_FACE');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output, true);
@@ -61,7 +61,7 @@ class AuthController extends Controller
     {
         // $ch  = curl_init();
         // $url = "https://graph.facebook.com/v2.11/";
-        // $uri = "me/friends?fields=picture,name,gender,birthday&limit=200&access_token=".Session::get('token');
+        // $uri = "me/friends?fields=picture,name,gender,birthday&limit=200&access_token=".env('TOKEN_FACE');
         // $output = $this->getCurl($ch, $url, $uri);
         // curl_close($ch);
         // $output = json_decode($output, true);
@@ -90,7 +90,7 @@ class AuthController extends Controller
                         // dd("true");
                         $ch = curl_init();
                         $url = "https://graph.facebook.com/v2.11/";
-                        $uri = $value['id']."/feed?message=Happy birthday to You S2 !!&method=POST&access_token=".Session::get('token');
+                        $uri = $value['id']."/feed?message=Happy birthday to You S2 !!&method=POST&access_token=".env('TOKEN_FACE');
                         $this->getCurl($ch, $url, $uri);
                         curl_close($ch);
                     }
@@ -119,7 +119,7 @@ class AuthController extends Controller
         $link = $request->input('link');
         $ch = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=".Session::get('token');
+        $uri = "me/feed?message=".$message."&link=".$link."&method=POST&access_token=".env('TOKEN_FACE');
         $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         return redirect('home');
@@ -130,7 +130,7 @@ class AuthController extends Controller
         $idn = $id;
         $ch  = curl_init();
         $url = "https://graph.facebook.com/v2.11/";
-        $uri = $idn."/feed?limit=1&access_token=" .Session::get('token');
+        $uri = $idn."/feed?limit=1&access_token=" .env('TOKEN_FACE');
         $output = $this->getCurl($ch, $url, $uri);
         curl_close($ch);
         $output = json_decode($output);
@@ -144,7 +144,7 @@ class AuthController extends Controller
         $ch  = curl_init();
         foreach ($newfeeds as $value) {
             $url = "https://graph.facebook.com/v2.11/";
-            $uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .Session::get('token');
+            $uri = $value->id."/reactions?type=LOVE&method=POST&access_token=" .env('TOKEN_FACE');
             $output = $this->getCurl($ch, $url, $uri);
         }
         curl_close($ch);
